@@ -306,12 +306,12 @@ export class Relationship extends Implementation {
 export class MongoRelationshipInterface extends MongooseFieldAdapter {
   constructor(...args) {
     super(...args);
-    this.isRelationship = true;
 
     // JM: It bugs me this is duplicated in the implementation but initialisation order makes it hard to avoid
     const [refListKey, refFieldPath] = this.config.ref.split('.');
     this.refListKey = refListKey;
     this.refFieldPath = refFieldPath;
+    this.isRelationship = true;
   }
 
   addToMongooseSchema(schema, mongoose, rels) {
@@ -401,14 +401,15 @@ export class KnexRelationshipInterface extends KnexFieldAdapter {
         return;
       }
       // The foreign key needs to do this work for us; we don't know what type it is
-      this.getListByKey(this.refListKey)
-        .getPrimaryKey()
-        .adapter.addToForeignTableSchema(table, {
-          path: this.path,
-          isUnique: this.isUnique,
-          isIndexed: this.isIndexed,
-          isNotNullable: this.isNotNullable,
-        });
+      const refList = this.getListByKey(this.refListKey);
+      const refId = refList.getPrimaryKey();
+      const foreignKeyConfig = {
+        path: this.path,
+        isUnique: this.isUnique,
+        isIndexed: this.isIndexed,
+        isNotNullable: this.isNotNullable,
+      };
+      refId.adapter.addToForeignTableSchema(table, foreignKeyConfig);
     }
   }
 
