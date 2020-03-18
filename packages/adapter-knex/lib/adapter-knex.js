@@ -72,15 +72,14 @@ class KnexAdapter extends BaseKeystoneAdapter {
       listAdapter._postConnect({ rels });
     });
 
-    // Run this only if explicity configured and still never in production
-    if (this.config.dropDatabase && process.env.NODE_ENV !== 'production') {
-      if (process.env.NODE_ENV !== 'test') {
-        console.log('Knex adapter: Dropping database');
-      }
-      await this.dropDatabase();
-    } else {
+    if (!this.config.dropDatabase || process.env.NODE_ENV === 'production') {
       return [];
     }
+
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Knex adapter: Dropping database');
+    }
+    await this.dropDatabase();
     return this._createTables({ rels });
   }
 
@@ -208,12 +207,17 @@ class KnexAdapter extends BaseKeystoneAdapter {
     this.knex.destroy();
   }
 
-  // This will completely drop the backing database. Use wisely.
-  // FIXME: this almost definitely isn't right any more.
-  dropDatabase() {
-    const tables = Object.values(this.listAdapters)
-      .map(listAdapter => `"${this.schemaName}"."${listAdapter.tableName}"`)
-      .join(',');
+  // This will drop all the tables in the backing database. Use wisely.
+  dropDatabase({ rels }) {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Knex adapter: Dropping database');
+    }
+    const tables = [
+      ...Object.values(this.listAdapters)
+        .map(listAdapter => `"${this.schemaName}"."${listAdapter.tableName}"`)
+        .join(','),
+      ...rels.filter(({ cardinality }) => cardinality === 'N:N').map(({ tableName }) => tableName),
+    ];
     return this.knex.raw(`DROP TABLE IF EXISTS ${tables} CASCADE`);
   }
 
