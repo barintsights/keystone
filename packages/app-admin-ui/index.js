@@ -65,10 +65,8 @@ class AdminUIApp {
     }
 
     return (
-      req.authedItem &&
-      this._isAccessAllowed({
-        authentication: { item: req.authedItem, listKey: req.authedListKey },
-      })
+      req.user &&
+      this._isAccessAllowed({ authentication: { item: req.user, listKey: req.authedListKey } })
     );
   }
 

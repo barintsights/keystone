@@ -74,7 +74,7 @@ class SessionManager {
         return next();
       }
 
-      req.authedItem = item;
+      req.user = item;
       req.authedListKey = req.session.keystoneListKey;
 
       next();
@@ -131,7 +131,7 @@ class SessionManager {
     return {
       startAuthedSession: ({ item, list }) => this.startAuthedSession(req, { item, list }),
       endAuthedSession: () => this.endAuthedSession(req),
-      authedItem: req.authedItem,
+      authedItem: req.user,
       authedListKey: req.authedListKey,
     };
   }
