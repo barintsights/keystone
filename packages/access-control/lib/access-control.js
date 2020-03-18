@@ -11,7 +11,7 @@ const validateGranularConfigTypes = (longHandAccess, validationError) => {
   return longHandAccess;
 };
 
-const parseAccessCore = ({ accessTypes, access, defaultAccess, onGranularParseError }) => {
+const parseAccessCore = ({ accessTypes, access, defaultAccess, onGranularParseError = () => {} }) => {
   const type = getType(access);
   switch (type) {
     case 'Boolean':
@@ -278,4 +278,5 @@ module.exports = {
 
     return result;
   },
+  parseAccessCore,
 };
