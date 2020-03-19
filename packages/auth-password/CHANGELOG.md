@@ -1,5 +1,13 @@
 # @keystonejs/auth-password
 
+## 5.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`b6a555c2`](https://github.com/keystonejs/keystone/commit/b6a555c28296394908757f7404b72bc6b828b52a), [`68be8f45`](https://github.com/keystonejs/keystone/commit/68be8f452909100fbddec431d6fe60c20a06a700)]:
+  - @keystonejs/session@6.0.0
+  - @keystonejs/fields@7.0.2
+
 ## 5.1.2
 
 ### Patch Changes

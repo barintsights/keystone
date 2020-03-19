@@ -1,5 +1,11 @@
 # @keystonejs/session
 
+## 6.0.0
+
+### Major Changes
+
+- [`b6a555c2`](https://github.com/keystonejs/keystone/commit/b6a555c28296394908757f7404b72bc6b828b52a) [#2540](https://github.com/keystonejs/keystone/pull/2540) Thanks [@timleslie](https://github.com/timleslie)! - Removed the undocumented `restrictAudienceMiddleware` function.
+
 ## 5.1.1
 
 ### Patch Changes
